@@ -1,0 +1,136 @@
+/* ===================== UMUM: FONTS & CONTAINER UTAMA ===================== */
+.daftar-container {
+  display: flex;
+  height: 100vh; /* Ubah tinggi seluruh halaman di sini */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===================== KIRI: BAGIAN BACKGROUND & OVERLAY ===================== */
+.daftar-left {
+  position: relative;
+  width: 50%; /* Ubah lebar sisi kiri di sini */
+  overflow: hidden;
+}
+
+/* Gambar latar belakang */
+.daftar-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Menyesuaikan tanpa merusak rasio */
+}
+
+/* Overlay transparan gelap */
+.daftar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(3, 34, 25, 0.6); /* Warna overlay + transparansi */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px; /* Jarak isi dari tepi overlay */
+  box-sizing: border-box;
+}
+
+   /* ===================== KIRI: KONTEN TEKS ===================== */
+   .daftar-logo {
+    width: 90px; /* Ubah ukuran logo di sini */
+    margin-bottom: 20px;
+  }
+  
+  .daftar-salam {
+    font-size: 32px; /* Ukuran salam pembuka */
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .daftar-subjudul {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .daftar-deskripsi {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.5;
+    max-width: 400px; /* Batas lebar deskripsi */
+  }
+  
+  
+  /* ===================== KANAN: FORMULIR PENDAFTARAN ===================== */
+  .daftar-right {
+    width: 50%;
+    background-color: #00ffb3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .daftar-form-card {
+    background-color: #00170f;
+    padding: 50px 40px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 400px;
+    color: white;
+    box-sizing: border-box;
+  }
+  
+  .daftar-title {
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
+    color: #00ffb3;
+    margin-bottom: 30px;
+  }
+  
+  .daftar-form-card label {
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  
+  .daftar-form-card input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+  
+  .daftar-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #00ffb3;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .daftar-button:hover {
+    background-color: #00e6a3;
+  }
+  
+  .daftar-masuk {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ccc;
+  }
+  
+  .daftar-masuk span {
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
