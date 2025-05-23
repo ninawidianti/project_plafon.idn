@@ -1,18 +1,30 @@
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
-  const bearer = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-  if (!bearer) return res.status(403).json({ message: 'Token tidak ditemukan' });
+  // Cek apakah header ada dan dimulai dengan "Bearer"
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(403).json({ message: 'Token tidak ditemukan atau format salah' });
+  }
 
-  const token = bearer.split(' ')[1];
+  const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Verifikasi token dengan secret dari environment
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      console.error("JWT_SECRET tidak ditemukan di environment");
+      return res.status(500).json({ message: 'Kesalahan server: secret tidak dikonfigurasi' });
+    }
+
+    const decoded = jwt.verify(token, secret);
+
+    // Simpan data user dari token ke request
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Token tidak valid' });
+    return res.status(401).json({ message: 'Token tidak valid', error: err.message });
   }
 };
 

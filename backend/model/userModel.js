@@ -14,8 +14,12 @@ const getAllUsers = callback => {
   db.query('SELECT id, name, email, role FROM user', callback);
 };
 const updateUser = (id, user, callback) => {
-  const sql = 'UPDATE user SET name = ?, email = ?, role = ? WHERE id = ?';
-  db.query(sql, [user.name, user.email, user.role, id], callback);
+  const sql = 'UPDATE user SET name = ?, email = ?, password = ?, role = ? WHERE id = ?';
+  db.query(sql, [user.name, user.email, user.password, user.role, id], callback);
+};
+const updateUserWithPassword = (id, user, callback) => {
+  const sql = 'UPDATE user SET name = ?, email = ?, role = ?, password = ? WHERE id = ?';
+  db.query(sql, [user.name, user.email, user.role, user.password, id], callback);
 };
 
 
@@ -23,5 +27,7 @@ module.exports = {
   createUser,
   findUserByEmail,
   getAllUsers,
-  updateUser
+  updateUser,
+  updateUserWithPassword
+
 };

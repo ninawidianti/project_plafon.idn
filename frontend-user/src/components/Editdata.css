@@ -67,3 +67,139 @@
   cursor: pointer;
   font-size: 14px;
 }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Overlay gelap transparan */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Animasi masuk overlay */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Kontainer modal putih dengan bayangan dan border radius */
+.modal-content {
+  background: #fff;
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: slideDown 0.3s ease forwards;
+}
+
+/* Animasi slide turun */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.edit-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  letter-spacing: 1px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Label untuk input */
+.edit-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* Input dengan border melengkung, shadow, dan transisi */
+.edit-form input {
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  margin-bottom: 1.1rem;
+  border-radius: 8px;
+  border: 1.8px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.edit-form input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.5);
+  outline: none;
+}
+
+/* Container tombol */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.2rem;
+}
+
+/* Tombol batal */
+.batal-btn {
+  background-color: #747474;
+  color: #f7f5f5;
+  border: none;
+  padding: 0.55rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 0.8rem;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.1);
+  transition: background-color 0.25s ease;
+}
+
+.batal-btn:hover {
+  background-color: #ddd;
+}
+
+/* Tombol simpan */
+.simpan-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.55rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.simpan-btn:hover {
+  background-color: #388e3c;
+}

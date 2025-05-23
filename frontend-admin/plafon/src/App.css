@@ -1,6 +1,49 @@
+/* Layout Wrapper */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
 /* Sidebar Styling */
 .sidebar {
-  width: 220px; /* Lebih proporsional */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background-color: #20232a;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+/* Navbar Styling */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 220px; /* sesuai lebar sidebar */
+  right: 0;
+  height: 60px;
+  background-color: black;
+  color: white;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  z-index: 999;
+  box-sizing: border-box;
+}
+
+/* Konten utama */
+.container {
+  margin-left: 220px; /* sesuaikan dengan sidebar */
+  padding-top: 70px;  /* beri ruang agar tidak tertutup navbar */
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+  width: calc(100% - 220px);
 }
 
 /* App Styling */
@@ -60,3 +103,22 @@
   background-color: #17d9a1; /* Warna saat hover */
 }
 
+/* Responsive Adjustment (Optional) */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .navbar {
+    left: 0;
+  }
+
+  .container {
+    margin-left: 0;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

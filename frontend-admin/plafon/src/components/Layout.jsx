@@ -11,18 +11,19 @@ const Layout = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className={`transition-all duration-300 ${sidebarOpen ? "w-64" : "w-20"}`}>
-        <Sidebar isOpen={sidebarOpen} onToggleSidebar={handleToggleSidebar} />
-      </div>
+      <Sidebar isOpen={sidebarOpen} onToggleSidebar={handleToggleSidebar} />
 
       {/* Main content */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div
+        className="flex flex-col flex-1"
+        style={{ marginLeft: sidebarOpen ? "260px" : "0", transition: "margin-left 0.3s" }}
+      >
         {/* Header */}
         <Header onToggleSidebar={handleToggleSidebar} />
 
-        {/* Main section with padding and scroll */}
+        {/* Main section */}
         <main className="flex-1 overflow-y-auto p-6 bg-white">
           <Outlet />
         </main>

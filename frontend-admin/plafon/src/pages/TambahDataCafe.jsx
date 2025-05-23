@@ -1,29 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
-
+import { FaArrowLeft } from "react-icons/fa";
 const TambahDataCafe = () => {
-  const initialFormState = {
-    Nama: "",
-    Jam_operasional: "",
-    Deskripsi: "",
-    Foto_cafe: null,
-    Foto_menu: null,
-    Detail_menu: null,
-    Kategori: "",
-    Kategori_plafon: "",
-    Alamat: "",
-    Rating: "",
-    Fasilitas: "",
-    Link_maps: "",
-    Link_instagram: "",
-    Link_whatsapp: "",
-  };
-
-  const [formInput, setFormInput] = useState(initialFormState);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState({});
-  const navigate = useNavigate();
+
+  const [formInput, setFormInput] = useState({
+    name: "",
+    J_Operasional: "",
+    deskripsi: "",
+    foto_cafe: null,
+    foto_menu: null,
+    detail_menu: "",
+    kategori: "",
+    kategori_plafon_idn: "",
+    alamat: "",
+    rating: "",
+    fasilitas: "",
+    maps: "",
+    instagram: "",
+    whatsapp: "",
+    harga: "",
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,20 +43,21 @@ const TambahDataCafe = () => {
   const validateForm = () => {
     const errors = {};
     const requiredFields = [
-      "Nama",
-      "Jam_operasional",
-      "Deskripsi",
-      "Foto_cafe",
-      "Foto_menu",
-      "Detail_menu",
-      "Kategori_plafon",
-      "Alamat",
-      "Rating",
-      "Fasilitas",
-      "Link_maps",
-      "Link_instagram",
-      "Link_whatsapp",
-      "Kategori",
+      "name",
+      "J_Operasional",
+      "deskripsi",
+      "foto_cafe",
+      "foto_menu",
+      "detail_menu",
+      "kategori",
+      "kategori_plafon_idn",
+      "alamat",
+      "rating",
+      "fasilitas",
+      "maps",
+      "instagram",
+      "whatsapp",
+      "harga",
     ];
 
     requiredFields.forEach((field) => {
@@ -81,10 +81,12 @@ const TambahDataCafe = () => {
       const formData = new FormData();
 
       Object.entries(formInput).forEach(([key, value]) => {
-        if (value) formData.append(key, value);
+        if (value !== null && value !== "") {
+          formData.append(key, value);
+        }
       });
 
-      const response = await fetch("http://localhost:5000/api/cafe", {
+      const response = await fetch("http://localhost:5000/api/cafes", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -100,10 +102,26 @@ const TambahDataCafe = () => {
       }
 
       alert("Data cafe berhasil ditambahkan!");
-      setFormInput(initialFormState);
+      setFormInput({
+        name: "",
+        J_Operasional: "",
+        deskripsi: "",
+        foto_cafe: null,
+        foto_menu: null,
+        detail_menu: "",
+        kategori: "",
+        kategori_plafon_idn: "",
+        alamat: "",
+        rating: "",
+        fasilitas: "",
+        maps: "",
+        instagram: "",
+        whatsapp: "",
+        harga: "",
+      });
       navigate("/data/cafe");
-    } catch (error) {
-      console.error("Error saat submit:", error);
+    } catch (err) {
+      console.error("Error saat submit:", err);
       alert("Terjadi kesalahan pada server.");
     } finally {
       setLoading(false);
@@ -112,19 +130,39 @@ const TambahDataCafe = () => {
 
   return (
     <div className="d-flex">
-      <Sidebar />
+      
       <main className="flex-grow-1 p-4" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
-        <h2 className="mb-4">Tambah Data Cafe</h2>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <button
+                      className="back-button"
+                      onClick={() => navigate(-1)}
+                      style={{
+                        backgroundColor: "#1BFCB6",
+                        border: "none",
+                        color: "black",
+                        padding: "8px 12px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        fontSize: "18px",
+                      }}
+                    >
+                      <FaArrowLeft />
+                    </button>
+          <h2 className="flex-grow-1 text-center mb-0">Tambah Data Cafe</h2>
+          <div style={{ width: "40px" }}></div>
+        </div>
         <form onSubmit={handleSubmit} className="row g-3">
+          {/* Input Text */}
           {[
-            { label: "Nama Cafe", name: "Nama" },
-            { label: "Link Maps", name: "Link_maps" },
-            { label: "Alamat", name: "Alamat" },
-            { label: "Link WhatsApp", name: "Link_whatsapp" },
-            { label: "Jam Operasional", name: "Jam_operasional" },
-            { label: "Rating", name: "Rating", type: "number" },
-            { label: "Link Instagram", name: "Link_instagram" },
-            { label: "Detail Menu", name: "Detail_menu" },
+            { label: "Nama Cafe", name: "name" },
+            { label: "Jam Operasional", name: "J_Operasional" },
+            { label: "Alamat", name: "alamat" },
+            { label: "Rating", name: "rating", type: "number" },
+            { label: "Link Maps", name: "maps" },
+            { label: "Link Instagram", name: "instagram" },
+            { label: "Link WhatsApp", name: "whatsapp" },
+            { label: "Detail Menu", name: "detail_menu" },
+            { label: "Harga", name: "harga", type: "number" },
           ].map(({ label, name, type = "text" }) => (
             <div key={name} className="col-md-6">
               <label className="form-label">{label}</label>
@@ -139,22 +177,27 @@ const TambahDataCafe = () => {
             </div>
           ))}
 
-          <div className="col-md-6">
-            <label className="form-label">Deskripsi</label>
-            <textarea name="Deskripsi" value={formInput.Deskripsi} onChange={handleInputChange} className="form-control" />
-            {errorMessages.Deskripsi && <small className="text-danger">{errorMessages.Deskripsi}</small>}
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Fasilitas</label>
-            <textarea name="Fasilitas" value={formInput.Fasilitas} onChange={handleInputChange} className="form-control" />
-            {errorMessages.Fasilitas && <small className="text-danger">{errorMessages.Fasilitas}</small>}
-          </div>
-
+          {/* Textarea */}
           {[
-            { label: "Foto Cafe", name: "Foto_cafe" },
-            { label: "Foto Menu", name: "Foto_menu" },
-           
+            { label: "Deskripsi", name: "deskripsi" },
+            { label: "Fasilitas", name: "fasilitas" },
+          ].map(({ label, name }) => (
+            <div key={name} className="col-md-6">
+              <label className="form-label">{label}</label>
+              <textarea
+                name={name}
+                value={formInput[name]}
+                onChange={handleInputChange}
+                className="form-control"
+              />
+              {errorMessages[name] && <small className="text-danger">{errorMessages[name]}</small>}
+            </div>
+          ))}
+
+          {/* File Upload */}
+          {[
+            { label: "Foto Cafe", name: "foto_cafe" },
+            { label: "Foto Menu", name: "foto_menu" },
           ].map(({ label, name }) => (
             <div key={name} className="col-md-6">
               <label className="form-label">{label}</label>
@@ -163,31 +206,44 @@ const TambahDataCafe = () => {
             </div>
           ))}
 
-          <div className="col-md-6">
-            <label className="form-label">Kategori Plafon</label>
-            <select name="Kategori_plafon" value={formInput.Kategori_plafon} onChange={handleInputChange} className="form-control">
-              <option value="">-- Pilih Kategori Plafon --</option>
-              <option value="Rekomendasi">Rekomendasi</option>
-              <option value="Non Rekomendasi">Non Rekomendasi</option>
-            </select>
-            {errorMessages.Kategori_plafon && <small className="text-danger">{errorMessages.Kategori_plafon}</small>}
-          </div>
+          {/* Dropdown */}
+          {[
+            {
+              label: "Kategori Plafon",
+              name: "kategori_plafon_idn",
+              options: ["Rekomendasi", "Non Rekomendasi"],
+            },
+            {
+              label: "Kategori",
+              name: "kategori",
+              options: ["Cafe", "Resto"],
+            },
+          ].map(({ label, name, options }) => (
+            <div key={name} className="col-md-6">
+              <label className="form-label">{label}</label>
+              <select name={name} value={formInput[name]} onChange={handleInputChange} className="form-control">
+                <option value="">-- Pilih {label} --</option>
+                {options.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+              {errorMessages[name] && <small className="text-danger">{errorMessages[name]}</small>}
+            </div>
+          ))}
 
-          <div className="col-md-6">
-            <label className="form-label">Kategori</label>
-            <select name="Kategori" value={formInput.Kategori} onChange={handleInputChange} className="form-control">
-              <option value="">-- Pilih Kategori --</option>
-              <option value="Cafe">Cafe</option>
-              <option value="Resto">Resto</option>
-            </select>
-            {errorMessages.Kategori && <small className="text-danger">{errorMessages.Kategori}</small>}
-          </div>
-
+          {/* Button */}
           <div className="col-12 d-flex align-items-center gap-2">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? "Menyimpan..." : "Tambah"}
+            <button
+              type="submit"
+              className="btn"
+              style={{ backgroundColor: "#1BFCB6", borderColor: "#1BFCB6", color: "#000" }}
+              disabled={loading}
+            >
+              {loading ? "Menyimpan..." : "Simpan"}
             </button>
-            <a href="/data/cafe" className="btn btn-secondary">Kembali</a>
+
           </div>
         </form>
       </main>

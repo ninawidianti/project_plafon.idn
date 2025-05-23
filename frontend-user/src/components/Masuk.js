@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import "./Masuk.css";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../service/auth.service";
+import "./Masuk.css";
 
 const Masuk = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(true); // Tentukan apakah form login atau register
+  const [name, setName] = useState(""); // Nama untuk registrasi
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [nama, setNama] = useState(""); // hanya untuk register
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -19,17 +18,17 @@ const Masuk = () => {
     setLoading(true);
 
     AuthService.login(email, password).then(
-      () => {
+      (response) => {
+        // Ambil token dari response dan simpan ke localStorage
+        const token = response.token;
+        localStorage.setItem("token", token);
+
         navigate("/");
         window.location.reload();
       },
+
       (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
 
         setLoading(false);
         setMessage(resMessage);
@@ -42,19 +41,14 @@ const Masuk = () => {
     setMessage("");
     setLoading(true);
 
-    AuthService.register(nama, email, password).then(
+    AuthService.register(name, email, password).then(
       (response) => {
         setMessage("Pendaftaran berhasil! Silakan login.");
         setLoading(false);
-        setIsLogin(true);
+        setIsLogin(true); // Switch to login after successful registration
       },
       (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
 
         setLoading(false);
         setMessage(resMessage);
@@ -71,10 +65,7 @@ const Masuk = () => {
           <img src="images/p.png" alt="Plafon Logo" className="daftar-logo" />
           <h1 className="masuk-salam">Hai, Sobat Nongki!</h1>
           <h2 className="masuk-subjudul">Selamat datang di plafon.idn</h2>
-          <p className="masuk-deskripsi">
-            Tempatnya semua rekomendasi cafe yang paling vibes, paling cozy,
-            dan paling cocok buat segala mood kamu.
-          </p>
+          <p className="masuk-deskripsi">Tempatnya semua rekomendasi cafe yang paling vibes, paling cozy, dan paling cocok buat segala mood kamu.</p>
         </div>
       </div>
 
@@ -87,36 +78,15 @@ const Masuk = () => {
             {!isLogin && (
               <>
                 <label htmlFor="nama">Nama</label>
-                <input
-                  type="text"
-                  id="nama"
-                  placeholder="Masukkan Nama"
-                  value={nama}
-                  onChange={(e) => setNama(e.target.value)}
-                  required
-                />
+                <input type="text" id="nama" placeholder="Masukkan Nama" value={name} onChange={(e) => setName(e.target.value)} required />
               </>
             )}
 
             <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Masukkan Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <input type="email" id="email" placeholder="Masukkan Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Masukkan Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <input type="password" id="password" placeholder="Masukkan Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
             <button className="masuk-button" disabled={loading}>
               {loading ? "Loading..." : isLogin ? "Masuk" : "Daftar"}
@@ -126,7 +96,7 @@ const Masuk = () => {
               className="masuk-daftar"
               onClick={() => {
                 setIsLogin(!isLogin);
-                setMessage("");
+                setMessage(""); // Reset error message when switching forms
               }}
             >
               {isLogin ? "Belum punya akun? " : "Sudah punya akun? "}

@@ -1,3 +1,19 @@
+/* Global box-sizing supaya padding dan border tidak menambah lebar total elemen */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Container utama agar lebar penuh dan padding minimal */
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0 auto;
+}
+
 :root {
   --green: #00e3aa;
   --green-dark: #00c99a;
@@ -11,35 +27,46 @@
 /* ========== HEADER ========== */
 .header-top {
   background-color: black;
-  padding: 0.5rem 2rem;
+  padding: 1rem 2rem;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: visible; /* Izinkan logo melewati batas header */
 }
 
-.logo {
-  height: 2rem;
+.logo-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
 }
+
 
 /* ========== BANNER ========== */
 .image-banner {
-  background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4');
-  background-size: cover;
-  background-position: center;
+  background-size: cover;         /* Mengisi seluruh area tanpa mengulang */
+  background-position: center;    /* Fokus ke tengah gambar */
+  background-repeat: no-repeat;   /* Hindari pengulangan */
+  image-rendering: auto;
   width: 100%;
   height: 250px;
   position: relative;
 }
 
 .back-button {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  font-size: 1.1rem;
-  color: white;
-  background-color: var(--green);
+  background: #00ffb0;
   border: none;
-  border-radius: 50%;
-  width: 2.25rem;
-  height: 2.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  margin: 0.5rem 0;
+  margin-left: 1rem;
+  font-size: 1rem;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  position: static; 
 }
 
 /* ========== INFO UTAMA CAFE ========== */
@@ -70,6 +97,7 @@
 .liked {
   color: red;
 }
+
 .not-liked {
   color: gray;
 }
@@ -202,11 +230,10 @@
 }
 
 /* ========== MENU & FASILITAS ========== */
-.menu-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  margin-bottom: 3rem;
+.menu-section .image img {
+  width: 30%;   /* dari 30% jadi 50% */
+  border-radius: 0.75rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .menu-section h2 {
@@ -222,11 +249,12 @@
 }
 
 .menu-section .image img {
-  width: 100%;
+  width: 30%;
   border-radius: 0.75rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+/* Fasilitas Section */
 .fasilitas-section {
   background-color: #f8f9fa;
   padding: 2rem;
@@ -258,13 +286,19 @@
 
 /* ========== REVIEW ========== */
 .review-container {
-  padding: 2rem;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background-color: #fff; /* Atau warna lain */
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 2rem 0;
 }
 
 .review-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .review-btn {
@@ -282,23 +316,39 @@
   background-color: var(--green-dark);
 }
 
+
 .review-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-direction: row;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 2rem; /* tetap ada padding dalam */
+  scroll-snap-type: x mandatory;
+}
+
+.review-grid::-webkit-scrollbar {
+  height: 8px;
+}
+.review-grid::-webkit-scrollbar-thumb {
+  background: var(--gray);
+  border-radius: 10px;
 }
 
 .review-card {
+  min-width: 350px;
+  max-width: 400px;
+  flex-shrink: 0;
   background-color: #fff;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  flex: 1 1 30%;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px black;
+  padding: 20px;
+  scroll-snap-align: start;
 }
+
 
 @media (max-width: 768px) {
   .review-card {
-    flex: 1 1 100%;
+    flex: 100%;
   }
 }
 
@@ -316,10 +366,26 @@
 }
 
 .review-text {
-  font-size: 0.875rem;
+  margin-top: 8px;
+  font-size: 14px;
   color: #444;
+  line-height: 1.4;
+}
+.review-content {
+  flex: 1;
 }
 
+.review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
 /* Review Form */
 .review-form {
   display: flex;
@@ -395,7 +461,7 @@
 /* Footer paling bawah */
 .footer-bawah {
   background-color: var(--dark);
-  color: #aaa;
+  color: #c5c5c5;
   font-size: 0.875rem;
   text-align: center;
   padding: 0.75rem 0;
@@ -430,16 +496,35 @@
   transform: scale(1.1);
 }
 
-.whatsapp { color: #25D366; }
-.instagram { color: #C13584; }
-.maps { color: #4285F4; }
+.whatsapp {
+  color: #25D366;
+}
+
+.instagram {
+  color: #C13584;
+}
+
+.maps {
+  color: #4285F4;
+}
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
+
 .review-rating {
-  margin-top: 4px;
-  color: #f5c518; /* warna emas */
-  font-size: 1.2em;
+  color: #f39c12;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
+

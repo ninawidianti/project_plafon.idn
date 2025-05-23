@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import './Deskripsi.css'; // Pastikan CSS sudah diimport
 
@@ -24,11 +23,6 @@ const ReviewSection = () => {
       {/* Form Review */}
       {showForm && (
         <div className="review-form">
-          <input
-            type="text"
-            placeholder="Nama Anda"
-            className="review-input"
-          />
           <textarea
             placeholder="Tulis ulasan anda..."
             className="review-textarea"

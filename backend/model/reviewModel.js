@@ -7,13 +7,19 @@ const getAllReviews = callback => {
 
 // Ambil review berdasarkan id cafe
 const getReviewsByCafeId = (cafeId, callback) => {
-  db.query('SELECT * FROM review WHERE cafe_id = ?', [cafeId], callback);
+  const sql = `
+    SELECT review.*, user.name AS name
+    FROM review 
+    JOIN user ON review.id_user = user.id 
+    WHERE review.id_cafe = ?`;
+  db.query(sql, [cafeId], callback);
 };
+
 
 // Tambah review baru
 const createReview = (review, callback) => {
-  const sql = 'INSERT INTO review (cafe_id, user_id, komentar, rating) VALUES (?, ?, ?, ?)';
-  db.query(sql, [review.cafe_id, review.user_id, review.komentar, review.rating], callback);
+  const sql = 'INSERT INTO review (id_cafe, id_user, komentar, rating) VALUES (?, ?, ?, ?)';
+  db.query(sql, [review.id_cafe, review.id_user, review.komentar, review.rating], callback);
 };
 
 // Hapus review

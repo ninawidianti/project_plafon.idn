@@ -3,7 +3,7 @@
     background-color: #2e2e2e;
     padding: 40px;
     border-radius: 10px;
-    width: 500px;
+    width: 100%;
     margin: 50px auto;
     color: white;
     font-family: "Arial", sans-serif;
@@ -59,8 +59,8 @@
     background-color: #00ff99;
     border: none;
     padding: 10px 20px;
-    border-radius: 8px;
-    color: black;
+    border-radius:0;
+    color: rgb(104, 99, 99);
     font-weight: bold;
     font-size: 14px;
     cursor: pointer;
@@ -69,4 +69,3 @@
   .review-submit:hover {
     background-color: #00e68a;
   }
-  

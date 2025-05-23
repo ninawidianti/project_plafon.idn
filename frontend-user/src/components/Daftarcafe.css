@@ -1,91 +1,12 @@
-/* ======== Container Utama ======== */
+/* Container Utama */
 .daftar-container {
   font-family: 'Poppins', sans-serif;
   background: #fff;
-  padding: 0 24px 40px;
-}/* ===============================
-   CONTAINER UTAMA
-   =============================== */
-.daftar-container {
   padding: 40px 20px;
-  background-color: #ffffff;
   text-align: center;
 }
 
-/* ===============================
-   JUDUL BAGIAN 'TENTANG PLAfON.IDN'
-   =============================== */
-.daftar-container h2 {
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 30px;
-  color: #333333;
-}
-
-/* ===============================
-   CONTAINER GRID UNTUK 4 GAMBAR
-   =============================== */
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 kolom */
-  gap: 20px; /* Jarak antar gambar */
-  justify-content: center;
-  margin-bottom: 40px;
-}
-
-/* ===============================
-   GAYA UNTUK MASING-MASING GAMBAR
-   =============================== */
-.image-grid img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px; /* Membuat sudut gambar membulat */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Bayangan halus */
-}
-
-/* ===============================
-   TEKS DESKRIPSI DI BAWAH GAMBAR
-   =============================== */
-.image-description {
-  font-size: 16px;
-  color: #666666;
-  margin-top: 10px;
-}
-
-/* ===============================
-   TOMBOL 'LIHAT LEBIH BANYAK'
-   =============================== */
-.more-button {
-  margin-top: 20px;
-  padding: 12px 30px;
-  background-color: #2f2f2f; /* Warna tombol */
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.more-button:hover {
-  background-color: #444444; /* Warna saat hover */
-}
-
-/* ===============================
-   RESPONSIF UNTUK LAYAR KECIL (MOBILE)
-   =============================== */
-@media screen and (max-width: 768px) {
-  .image-grid {
-    grid-template-columns: 1fr; /* Ubah jadi 1 kolom saat di layar kecil */
-  }
-
-  .daftar-container h2 {
-    font-size: 24px;
-  }
-}
-
-
-/* ======== Navbar atas ======== */
+/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -95,11 +16,7 @@
   align-items: center;
 }
 
-.logo-img {
-  height: 24px;
-}
-
-/* ======== Tombol kembali (pojok kiri atas) ======== */
+/* Tombol Kembali */
 .back-button {
   margin-top: 24px;
 }
@@ -118,7 +35,7 @@
   cursor: pointer;
 }
 
-/* ======== Judul Halaman ======== */
+/* Judul Halaman */
 .daftar-title {
   margin-top: 30px;
   text-align: left;
@@ -135,8 +52,8 @@
   font-size: 14px;
 }
 
-/* ======== Search & Filter ======== */
-.search-bar {
+/* Search dan Filter */
+.search-section {
   margin-top: 30px;
   display: flex;
   align-items: center;
@@ -148,7 +65,7 @@
   position: relative;
 }
 
-.search-bar input {
+.search-section input {
   flex: 1;
   border: none;
   outline: none;
@@ -159,22 +76,37 @@
 
 .filter-dropdown {
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
-.filter {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #828282;
-  font-size: 14px;
-  font-weight: 500;
-  margin: 0 10px;
+.filter-btn {
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-/* Tombol search */
+.filter-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  z-index: 10;
+}
+
+.filter-options div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.filter-options div:hover {
+  background-color: #f1f1f1;
+}
+
 .search-btn {
   background-color: #00CE8A;
   color: white;
@@ -188,32 +120,7 @@
   cursor: pointer;
 }
 
-/* ======== Dropdown Menu Filter ======== */
-.filter-dropdown .dropdown-menu {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  background: white;
-  border: 1px solid #E0E0E0;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 100;
-  min-width: 160px;
-  padding: 8px 0;
-}
-
-.dropdown-item {
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  color: #4F4F4F;
-}
-
-.dropdown-item:hover {
-  background: #F2F2F2;
-}
-
-/* ======== Daftar Cafe Card ======== */
+/* Daftar Cafe */
 .cafe-list {
   display: flex;
   gap: 20px;
@@ -271,7 +178,8 @@
   border-radius: 999px;
   font-weight: 500;
 }
-/* ===================== FOOTER - LOKASI ===================== */
+
+  /* ===================== FOOTER - LOKASI ===================== */
 .lokasi-section {
   display: flex;
   justify-content: space-between;
@@ -331,98 +239,98 @@
   border: 0.5px solid #666;
   margin-bottom: 10px;
 }
-
-/* ===================== SECTION HEADER - LIHAT SEMUA ===================== */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-.lihat-semua-btn {
-  background: none;
-  border: none;
-  color: #007bff;
-  font-size: 0.95rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: color 0.3s ease;
-}
-.lihat-semua-btn:hover {
-  color: #0056b3;
-}
-.lihat-semua-btn svg {
-  transition: transform 0.3s ease;
-}
-.lihat-semua-btn:hover svg {
-  transform: translateX(3px);
-}
-
-/* ===================== SECTION TENTANG PLAFON.IDN (LANJUTAN) ===================== */
-.tentang-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 60px 80px;
-  gap: 60px;
-  flex-wrap: wrap;
-}
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 140px);
-  grid-template-rows: repeat(2, 140px);
-  gap: 16px;
-}
-.img {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 20px;
-}
-.text-section {
-  flex: 1;
-  min-width: 300px;
-}
-.judul {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: #1e1e1e;
-}
-.isi {
-  font-size: 15px;
-  line-height: 1.8;
-  margin-bottom: 12px;
-  color: #333;
-}
-
-/* ===================== BOX HIJAU - ANGKA DAN SLOGAN ===================== */
-.highlight-box {
-  margin-top: 32px;
-  background-color: #00e49b;
-  padding: 20px 28px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  color: white;
-}
-.highlight-left h3 {
-  font-size: 28px;
-  margin: 0;
-}
-.highlight-left p {
-  font-size: 14px;
-  margin: 0;
-}
-.highlight-right .temukan {
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-.highlight-right .keterangan {
-  font-size: 13px;
-  font-style: italic;
-  opacity: 0.9;
-}
+  /* ===================== SECTION HEADER - LIHAT SEMUA ===================== */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .lihat-semua-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s ease;
+  }
+  .lihat-semua-btn:hover {
+    color: #0056b3;
+  }
+  .lihat-semua-btn svg {
+    transition: transform 0.3s ease;
+  }
+  .lihat-semua-btn:hover svg {
+    transform: translateX(3px);
+  }
+  
+  /* ===================== SECTION TENTANG PLAFON.IDN (LANJUTAN) ===================== */
+  .tentang-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 60px 80px;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 140px);
+    grid-template-rows: repeat(2, 140px);
+    gap: 16px;
+  }
+  .img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  .text-section {
+    flex: 1;
+    min-width: 300px;
+  }
+  .judul {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #1e1e1e;
+  }
+  .isi {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    color: #333;
+  }
+  
+  /* ===================== BOX HIJAU - ANGKA DAN SLOGAN ===================== */
+  .highlight-box {
+    margin-top: 32px;
+    background-color: #00e49b;
+    padding: 20px 28px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: white;
+  }
+  .highlight-left h3 {
+    font-size: 28px;
+    margin: 0;
+  }
+  .highlight-left p {
+    font-size: 14px;
+    margin: 0;
+  }
+  .highlight-right .temukan {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .highlight-right .keterangan {
+    font-size: 13px;
+    font-style: italic;
+    opacity: 0.9;
+  }
+  

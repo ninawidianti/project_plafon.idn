@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
-import './Login.css'; // nanti kita buat file ini
+import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Inisialisasi navigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch('http://localhost:5000/api/users/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         alert('Login berhasil!');
-        // Simpan token ke localStorage (kalau pakai JWT)
-        localStorage.setItem('token', data.token); // Contoh menyimpan token
-        
-        // Arahkan ke halaman dashboard setelah login berhasil
-        navigate('/dashboard'); // Ganti dengan rute dashboard yang sesuai
+        localStorage.setItem('token', data.token);
+        navigate('/dashboard');
       } else {
         alert(data.message || 'Login gagal');
       }
@@ -35,29 +30,36 @@ function Login() {
       alert('Terjadi kesalahan saat login.');
     }
   };
-  
 
   return (
     <div className="login-container">
-      <div className="login-left">
+      <div
+        className="login-left"
+        style={{
+          backgroundImage: "url('/images/background.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderTopLeftRadius: '20px',
+          borderBottomLeftRadius: '20px',
+        }}
+      >
         <div className="brand">
-          <img src="/logo.png" alt="Logo" className="logo" />
-          <h1>Plafon.idn</h1>
+          <img src="/images/logo.png" alt="Logo" className="logo" />
+          
         </div>
-        <div className="welcome-text">
+        <div className="welcome-text" style={{ padding: '20px', borderRadius: '10px' }}>
           <h2>Hai, Sobat Nongki!</h2>
           <p>Selamat datang di Plafon.idn</p>
-          <p>Tempatnya semua rekomendasi cafe yang paling vibes, paling cozy, dan paling cocok buat segala mood kamu.</p>
-          <div className="image-overlay">
-            <img src="/bg-image.jpg" alt="Cafe" />
-            <div className="overlay-text">Plafon .idn</div>
-          </div>
+          <p>
+            Tempatnya semua rekomendasi cafe yang paling vibes, paling cozy, dan paling cocok buat segala mood kamu.
+          </p>
         </div>
       </div>
 
       <div className="login-right">
         <form onSubmit={handleSubmit} className="login-form">
           <h2 className="form-title">Masuk</h2>
+
           <div className="form-group">
             <label>Email</label>
             <input
@@ -68,6 +70,7 @@ function Login() {
               required
             />
           </div>
+
           <div className="form-group">
             <label>Password</label>
             <input
@@ -78,10 +81,10 @@ function Login() {
               required
             />
           </div>
+
           <button type="submit" className="login-button">Kirim</button>
-          <p className="register-link">
-            Belum Punya Akun? <Link to="/register">Daftar</Link>
-          </p>
+
+         
         </form>
       </div>
     </div>
