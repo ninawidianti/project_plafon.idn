@@ -33,7 +33,7 @@ const fileFilter = (req, file, cb) => {
 const uploadCafe = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 2 * 1024 * 1024 }, // Max 2MB per file
+  limits: { fileSize: 5 * 1024 * 1024 }, // Max 2MB per file
 }).fields([
   { name: "foto_cafe", maxCount: 5 },
   { name: "foto_menu", maxCount: 5 },

@@ -52,72 +52,73 @@ const createCafe = (req, res) => {
 };
 
 const updateCafe = (req, res) => {
-
   const id = req.params.id;
-
   const data = req.body;
 
-
-
   console.log("Update ID:", id);
-
-  console.log("Update data:", data);
-
+  console.log("Received data:", data);
   console.log("Received files:", req.files);
 
+  // Ambil data lama dulu
+  cafeModel.getCafeById(id, (err, results) => {
+    if (err) return res.status(500).json({ message: "Gagal mengambil data lama", error: err });
+    if (results.length === 0) return res.status(404).json({ message: "Cafe tidak ditemukan" });
 
+    const oldData = results[0];
 
-  let foto_cafe = data.foto_cafe; // default: pakai yg lama dari client (JSON string array)
+    let foto_cafe_files = [];
+    let foto_menu = oldData.foto_menu;
 
-  let foto_menu = data.foto_menu; // default: pakai yg lama
-
-
-
-  if (req.files) {
-
-    if (req.files["foto_cafe"]) {
-
-      // jika ada upload baru foto_cafe, simpan array semua filename JSON string
-
-      const fotoCafeFiles = req.files["foto_cafe"].map((file) => file.filename);
-
-      foto_cafe = JSON.stringify(fotoCafeFiles);
-
+    // Ambil foto baru jika ada, jika tidak pakai yang lama
+    if (req.files && req.files["foto_cafe"]) {
+      foto_cafe_files = req.files["foto_cafe"].map((file) => file.filename);
+    } else if (data.foto_cafe) {
+      try {
+        foto_cafe_files = JSON.parse(data.foto_cafe);
+      } catch (e) {
+        return res.status(400).json({ message: "Format foto_cafe tidak valid" });
+      }
+    } else {
+      try {
+        foto_cafe_files = JSON.parse(oldData.foto_cafe);
+      } catch {
+        foto_cafe_files = [];
+      }
     }
 
-    if (req.files["foto_menu"]) {
-
-      // foto_menu biasanya 1 file, tapi kalua banyak bisa disesuaikan
-
+    if (req.files && req.files["foto_menu"]) {
       foto_menu = req.files["foto_menu"][0].filename;
-
     }
 
-  }
+    const updatedData = {
+      name: data.name || oldData.name,
+      alamat: data.alamat || oldData.alamat,
+      deskripsi: data.deskripsi || oldData.deskripsi,
+      J_Operasional: data.J_Operasional || oldData.J_Operasional,
+      rating: data.rating || oldData.rating,
+      foto_menu,
+      foto_cafe: JSON.stringify(foto_cafe_files),
+      maps: data.maps || oldData.maps,
+      instagram: data.instagram || oldData.instagram,
+      whatsapp: data.whatsapp || oldData.whatsapp,
+      fasilitas: data.fasilitas || oldData.fasilitas,
+      kategori: data.kategori || oldData.kategori,
+      harga: data.harga || oldData.harga,
+      kategori_plafon_idn: data.kategori_plafon_idn || oldData.kategori_plafon_idn,
+      detail_menu: data.detail_menu || oldData.detail_menu,
+    };
 
+    console.log("Final updatedData:", updatedData);
 
-
-  const updatedData = {
-
-    ...data,
-
-    foto_cafe,
-
-    foto_menu,
-
-  };
-
-
-
-  cafeModel.updateCafe(id, updatedData, (err) => {
-
-    if (err) return res.status(500).json({ message: "Gagal memperbarui café", error: err });
-
-    res.json({ message: "Café berhasil diperbarui" });
-
+    cafeModel.updateCafe(id, updatedData, (err) => {
+      if (err) return res.status(500).json({ message: "Gagal memperbarui café", error: err });
+      res.json({ message: "Café berhasil diperbarui" });
+    });
   });
-
 };
+
+
+
 
 const deleteCafe = (req, res) => {
   const id = req.params.id;

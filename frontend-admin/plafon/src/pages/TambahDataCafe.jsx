@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
 
 const TambahDataCafe = () => {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ const TambahDataCafe = () => {
     name: "",
     J_Operasional: "",
     deskripsi: "",
-    foto_cafe: [],    // <-- ubah ke array agar bisa multiple
+    foto_cafe: null,
     foto_menu: null,
     detail_menu: "",
     kategori: "",
@@ -35,17 +34,10 @@ const TambahDataCafe = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    if (name === "foto_cafe") {
-      setFormInput((prev) => ({
-        ...prev,
-        [name]: files,    // simpan semua files (FileList)
-      }));
-    } else {
-      setFormInput((prev) => ({
-        ...prev,
-        [name]: files[0], // single file
-      }));
-    }
+    setFormInput((prev) => ({
+      ...prev,
+      [name]: files[0],
+    }));
   };
 
   const validateForm = () => {
@@ -70,11 +62,7 @@ const TambahDataCafe = () => {
 
     requiredFields.forEach((field) => {
       const value = formInput[field];
-      if (
-        !value ||
-        (typeof value === "string" && value.trim() === "") ||
-        (field === "foto_cafe" && value.length === 0) // cek khusus foto_cafe array kosong
-      ) {
+      if (!value || (typeof value === "string" && value.trim() === "")) {
         errors[field] = `${field.replace("_", " ")} tidak boleh kosong.`;
       }
     });
@@ -94,15 +82,7 @@ const TambahDataCafe = () => {
 
       Object.entries(formInput).forEach(([key, value]) => {
         if (value !== null && value !== "") {
-          if (key === "foto_cafe" && value.length > 0) {
-            for (let i = 0; i < value.length; i++) {
-              formData.append("foto_cafe", value[i]);
-            }
-          } else if (key === "foto_menu" && value) {
-            formData.append("foto_menu", value);
-          } else if (key !== "foto_cafe" && key !== "foto_menu") {
-            formData.append(key, value);
-          }
+          formData.append(key, value);
         }
       });
 
@@ -110,7 +90,6 @@ const TambahDataCafe = () => {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          // jangan set Content-Type biarkan browser atur otomatis
         },
         body: formData,
       });
@@ -127,7 +106,7 @@ const TambahDataCafe = () => {
         name: "",
         J_Operasional: "",
         deskripsi: "",
-        foto_cafe: [],
+        foto_cafe: null,
         foto_menu: null,
         detail_menu: "",
         kategori: "",
@@ -151,23 +130,12 @@ const TambahDataCafe = () => {
 
   return (
     <div className="d-flex">
+      
       <main className="flex-grow-1 p-4" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <button
-            className="back-button"
-            onClick={() => navigate(-1)}
-            style={{
-              backgroundColor: "#1BFCB6",
-              border: "none",
-              color: "black",
-              padding: "8px 12px",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontSize: "18px",
-            }}
-          >
-            <FaArrowLeft />
-          </button>
+          <Link to="/datacafe" className="btn btn-success" style={{ backgroundColor: "#1BFCB6", border: "none" }}>
+            ←
+          </Link>
           <h2 className="flex-grow-1 text-center mb-0">Tambah Data Cafe</h2>
           <div style={{ width: "40px" }}></div>
         </div>
@@ -215,30 +183,16 @@ const TambahDataCafe = () => {
           ))}
 
           {/* File Upload */}
-          <div className="col-md-6">
-            <label className="form-label">Foto Cafe (bisa pilih banyak)</label>
-            <input
-              type="file"
-              name="foto_cafe"
-              multiple
-              onChange={handleFileChange}
-              className="form-control"
-              accept="image/*"
-            />
-            {errorMessages.foto_cafe && <small className="text-danger">{errorMessages.foto_cafe}</small>}
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Foto Menu (satu file)</label>
-            <input
-              type="file"
-              name="foto_menu"
-              onChange={handleFileChange}
-              className="form-control"
-              accept="image/*"
-            />
-            {errorMessages.foto_menu && <small className="text-danger">{errorMessages.foto_menu}</small>}
-          </div>
+          {[
+            { label: "Foto Cafe", name: "foto_cafe" },
+            { label: "Foto Menu", name: "foto_menu" },
+          ].map(({ label, name }) => (
+            <div key={name} className="col-md-6">
+              <label className="form-label">{label}</label>
+              <input type="file" name={name} onChange={handleFileChange} className="form-control" />
+              {errorMessages[name] && <small className="text-danger">{errorMessages[name]}</small>}
+            </div>
+          ))}
 
           {/* Dropdown */}
           {[
@@ -277,6 +231,7 @@ const TambahDataCafe = () => {
             >
               {loading ? "Menyimpan..." : "Simpan"}
             </button>
+
           </div>
         </form>
       </main>

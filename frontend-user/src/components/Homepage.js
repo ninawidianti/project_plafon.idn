@@ -309,7 +309,7 @@ const Homepage = () => {
           <div
             className="bintang-left"
             style={{
-              maxWidth: "520px",
+              maxWidth: "340px",
               padding: "20px",
               backgroundColor: "#f9fafb", // warna latar lembut
               borderRadius: "12px",
@@ -472,6 +472,7 @@ const Homepage = () => {
             className="lihat-semua-btn"
             onClick={() => navigate("/daftarcafe2")}
             style={{
+               marginTop: "8px",
               background: "none",
               border: "none",
               color: "#00ff90",

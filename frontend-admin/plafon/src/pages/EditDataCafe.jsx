@@ -23,6 +23,8 @@ const EditDataCafe = () => {
     instagram: "",
     whatsapp: "",
     harga: "",
+    foto_cafe_preview: [],
+    foto_menu_preview: "",
   });
 
   useEffect(() => {
@@ -39,9 +41,16 @@ const EditDataCafe = () => {
         setFormInput((prev) => ({
           ...prev,
           ...data,
+          foto_cafe_preview: Array.isArray(data.foto_cafe)
+            ? data.foto_cafe
+            : data.foto_cafe
+              ? [data.foto_cafe]
+              : [],
+          foto_menu_preview: data.foto_menu || "",
           foto_cafe: null,
           foto_menu: null,
         }));
+
       } catch (error) {
         alert("Gagal mengambil data cafe.");
         console.error(error);
@@ -60,10 +69,19 @@ const EditDataCafe = () => {
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     const fileArray = Array.from(files);
-    setFormInput((prev) => ({
-      ...prev,
-      [name]: name === "foto_cafe" ? fileArray : files[0],
-    }));
+    if (name === "foto_cafe") {
+      setFormInput((prev) => ({
+        ...prev,
+        foto_cafe: fileArray,
+        foto_cafe_preview: fileArray.map((file) => URL.createObjectURL(file)),
+      }));
+    } else if (name === "foto_menu") {
+      setFormInput((prev) => ({
+        ...prev,
+        foto_menu: files[0],
+        foto_menu_preview: URL.createObjectURL(files[0]),
+      }));
+    }
   };
 
   const validateForm = () => {
@@ -84,61 +102,67 @@ const EditDataCafe = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      const formData = new FormData();
+  e.preventDefault();
+  if (!validateForm()) return;
+  setLoading(true);
+  try {
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
 
-      for (const key in formInput) {
-        const value = formInput[key];
-        if (value !== null && value !== "") {
-          if (key === "foto_cafe" && Array.isArray(value)) {
-            value.forEach((file) => {
-              formData.append("foto_cafe", file);
-            });
-          } else if (key === "foto_menu") {
-            formData.append("foto_menu", value);
-          } else if (key !== "foto_cafe") {
-            formData.append(key, value);
-          }
+    for (const key in formInput) {
+      const value = formInput[key];
+
+      // Jangan append preview ke FormData
+      if (key === "foto_cafe_preview" || key === "foto_menu_preview") continue;
+
+      // Hanya append foto_cafe jika ada file baru
+      if (key === "foto_cafe") {
+        if (Array.isArray(value) && value.length > 0) {
+          value.forEach((file) => {
+            formData.append("foto_cafe", file);
+          });
         }
+        continue; // lanjut ke key berikutnya tanpa append string kosong
       }
 
-      // Debug isi formData
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
+      // Hanya append foto_menu jika ada file baru
+      if (key === "foto_menu") {
+        if (value) {
+          formData.append("foto_menu", value);
+        }
+        continue;
       }
 
-      const res = await fetch(`http://localhost:5000/api/cafes/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        console.error("RESPON ERROR DARI BACKEND:", result);
-        throw new Error(result.message || "Update gagal. Periksa kembali input atau server.");
+      // Append field lain jika tidak kosong
+      if (value !== null && value !== "") {
+        formData.append(key, value);
       }
-
-      alert("Data cafe berhasil diperbarui!");
-      navigate("/datacafe");
-    } catch (err) {
-      let errorMsg = "Terjadi kesalahan saat update.";
-      if (err instanceof Error) {
-        errorMsg += `\nPesan: ${err.message}`;
-      }
-      alert(errorMsg);
-      console.error("DETAIL ERROR SAAT UPDATE:", err);
-    } finally {
-      setLoading(false);
     }
-  };
+
+    const res = await fetch(`http://localhost:5000/api/cafes/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      throw new Error(result.message || "Update gagal. Periksa kembali input atau server.");
+    }
+
+    alert("Data cafe berhasil diperbarui!");
+    navigate("/datacafe");
+  } catch (err) {
+    alert("Terjadi kesalahan saat update. Pesan: " + err.message);
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="d-flex">
@@ -159,16 +183,12 @@ const EditDataCafe = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="row g-3" encType="multipart/form-data">
-          {[
-            { label: "Nama Cafe", name: "name" },
-            { label: "Jam Operasional", name: "J_Operasional" },
-            { label: "Alamat", name: "alamat" },
-            { label: "Rating", name: "rating", type: "number" },
-            { label: "Link Maps", name: "maps" },
-            { label: "Link Instagram", name: "instagram" },
-            { label: "Link WhatsApp", name: "whatsapp" },
-            { label: "Detail Menu", name: "detail_menu" },
-            { label: "Harga", name: "harga" },
+          {/* Input Text */}
+          {[{ label: "Nama Cafe", name: "name" }, { label: "Jam Operasional", name: "J_Operasional" },
+          { label: "Alamat", name: "alamat" }, { label: "Rating", name: "rating", type: "number" },
+          { label: "Link Maps", name: "maps" }, { label: "Link Instagram", name: "instagram" },
+          { label: "Link WhatsApp", name: "whatsapp" }, { label: "Detail Menu", name: "detail_menu" },
+          { label: "Harga", name: "harga" }
           ].map(({ label, name, type = "text" }) => (
             <div key={name} className="col-md-6">
               <label className="form-label">{label}</label>
@@ -183,6 +203,7 @@ const EditDataCafe = () => {
             </div>
           ))}
 
+          {/* Textarea */}
           {[{ label: "Deskripsi", name: "deskripsi" }, { label: "Fasilitas", name: "fasilitas" }].map(({ label, name }) => (
             <div key={name} className="col-md-6">
               <label className="form-label">{label}</label>
@@ -196,6 +217,7 @@ const EditDataCafe = () => {
             </div>
           ))}
 
+          {/* Upload Foto Cafe */}
           <div className="col-md-6">
             <label className="form-label">Foto Cafe (bisa pilih banyak)</label>
             <input
@@ -206,8 +228,14 @@ const EditDataCafe = () => {
               className="form-control"
               accept="image/*"
             />
+            <div className="mt-2 d-flex flex-wrap gap-2">
+              {formInput.foto_cafe_preview.map((src, idx) => (
+                <img key={idx} src={src} alt={`foto cafe ${idx + 1}`} width="100" height="80" style={{ objectFit: "cover", borderRadius: 5 }} />
+              ))}
+            </div>
           </div>
 
+          {/* Upload Foto Menu */}
           <div className="col-md-6">
             <label className="form-label">Foto Menu (satu file)</label>
             <input
@@ -217,11 +245,16 @@ const EditDataCafe = () => {
               className="form-control"
               accept="image/*"
             />
+            {formInput.foto_menu_preview && (
+              <div className="mt-2">
+                <img src={formInput.foto_menu_preview} alt="foto menu" width="100" height="80" style={{ objectFit: "cover", borderRadius: 5 }} />
+              </div>
+            )}
           </div>
 
-          {[
-            { label: "Kategori Plafon", name: "kategori_plafon_idn", options: ["Rekomendasi", "Non Rekomendasi"] },
-            { label: "Kategori", name: "kategori", options: ["Cafe", "Resto"] },
+          {/* Dropdown */}
+          {[{ label: "Kategori Plafon", name: "kategori_plafon_idn", options: ["rekomendasi", "non rekomendasi"] },
+          { label: "Kategori", name: "kategori", options: ["cafe", "resto"] }
           ].map(({ label, name, options }) => (
             <div key={name} className="col-md-6">
               <label className="form-label">{label}</label>

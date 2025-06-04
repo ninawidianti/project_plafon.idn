@@ -35,9 +35,9 @@
   overflow: visible; /* Izinkan logo melewati batas header */
 }
 
-.logo-img {
-  width: 120px;
-  height: 120px;
+.lokasi-logo {
+  width: 100px;
+  height: 100px;
   object-fit: contain;
 }
 
@@ -71,7 +71,6 @@
 
 .back-button {
   position: absolute;
-  top: 20px;
   left: 20px;
   width: 40px; /* ukuran diameter lingkaran */
   height: 40px; /* harus sama dengan width */
@@ -86,6 +85,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 1rem;
 }
 
 .back-button:hover {
@@ -258,6 +258,7 @@
   width: 30%;   /* dari 30% jadi 50% */
   border-radius: 0.75rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 2rem;
 }
 
 .menu-section h2 {
@@ -283,6 +284,7 @@
   background-color: #f8f9fa;
   padding: 2rem;
   border-radius: 1rem;
+  margin-top: 2rem;
 }
 
 .fasilitas-section h4 {
@@ -315,7 +317,7 @@
   background-color: #fff; /* Atau warna lain */
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-  padding: 2rem 0;
+  padding: 2rem;
 }
 
 .review-header {

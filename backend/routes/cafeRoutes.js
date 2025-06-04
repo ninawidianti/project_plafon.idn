@@ -11,7 +11,7 @@ router.put("/:id", verifyToken, uploadCafe, handleFileUploadError, cafeControlle
 
 
 // Protected Routes (perlu login)
-router.put("/:id", verifyToken, cafeController.updateCafe);
+
 router.delete("/:id", verifyToken, cafeController.deleteCafe);
 
 // Route untuk membuat cafe baru dengan upload file
